@@ -27,7 +27,17 @@
             <div class="section-body">
                 <h2 class="section-title">Product</h2>
 
-
+                <!-- ✅ Error messages -->
+                @if ($errors->any())
+                    <div class="alert alert-danger">
+                        <strong>Whoops!</strong> Ada kesalahan dalam input Anda.<br><br>
+                        <ul>
+                            @foreach ($errors->all() as $error)
+                                <li>{{ $error }}</li>
+                            @endforeach
+                        </ul>
+                    </div>
+                @endif
 
                 <div class="card">
                     <form action="{{ route('product.store') }}" method="POST" enctype="multipart/form-data">
@@ -39,10 +49,9 @@
                             <div class="form-group">
                                 <label>Name</label>
                                 <input type="text"
-                                    class="form-control @error('name')
-                                is-invalid
-                            @enderror"
-                                    name="name">
+                                    class="form-control @error('name') is-invalid @enderror"
+                                    name="name"
+                                    value="{{ old('name') }}">
                                 @error('name')
                                     <div class="invalid-feedback">
                                         {{ $message }}
@@ -52,10 +61,9 @@
                             <div class="form-group">
                                 <label>Price</label>
                                 <input type="number"
-                                    class="form-control @error('price')
-                                is-invalid
-                            @enderror"
-                                    name="price">
+                                    class="form-control @error('price') is-invalid @enderror"
+                                    name="price"
+                                    value="{{ old('price') }}">
                                 @error('price')
                                     <div class="invalid-feedback">
                                         {{ $message }}
@@ -65,10 +73,9 @@
                             <div class="form-group">
                                 <label>Stock</label>
                                 <input type="number"
-                                    class="form-control @error('stock')
-                                is-invalid
-                            @enderror"
-                                    name="stock">
+                                    class="form-control @error('stock') is-invalid @enderror"
+                                    name="stock"
+                                    value="{{ old('stock') }}">
                                 @error('stock')
                                     <div class="invalid-feedback">
                                         {{ $message }}
@@ -81,34 +88,38 @@
                                 <div class="selectgroup w-100">
                                     <label class="selectgroup-item">
                                         <input type="radio" name="category" value="food" class="selectgroup-input"
-                                            checked="">
+                                            {{ old('category', 'food') == 'food' ? 'checked' : '' }}>
                                         <span class="selectgroup-button">Food</span>
                                     </label>
                                     <label class="selectgroup-item">
-                                        <input type="radio" name="category" value="drink" class="selectgroup-input">
+                                        <input type="radio" name="category" value="drink" class="selectgroup-input"
+                                            {{ old('category') == 'drink' ? 'checked' : '' }}>
                                         <span class="selectgroup-button">Drink</span>
                                     </label>
                                     <label class="selectgroup-item">
-                                        <input type="radio" name="category" value="snack" class="selectgroup-input">
+                                        <input type="radio" name="category" value="snack" class="selectgroup-input"
+                                            {{ old('category') == 'snack' ? 'checked' : '' }}>
                                         <span class="selectgroup-button">Snack</span>
                                     </label>
-
                                 </div>
+                                @error('category')
+                                    <div class="text-danger mt-2">{{ $message }}</div>
+                                @enderror
                             </div>
 
                             <div class="form-group">
                                 <label>Photo Product</label>
                                 <div class="col-sm-9">
-                                    <input type="file" class="form-control" name="image"
-                                        @error('image') is-invalid @enderror>
+                                    <input type="file"
+                                        class="form-control @error('image') is-invalid @enderror"
+                                        name="image">
                                 </div>
                                 @error('image')
-                                    <div class="invalid-feedback">
+                                    <div class="invalid-feedback d-block">
                                         {{ $message }}
                                     </div>
                                 @enderror
                             </div>
-
 
                         </div>
                         <div class="card-footer text-right">
